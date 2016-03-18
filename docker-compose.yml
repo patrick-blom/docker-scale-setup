@@ -1,0 +1,37 @@
+httpd:
+    build: ./httpd/
+    ports:
+        - 80:80
+    links:
+        - php
+    volumes_from:
+        - app
+php:
+    build: ./php/
+    expose:
+        - 9000
+    links:
+        - mysql
+    volumes_from:
+        - app
+mysql:
+    image: mysql:5.5.48
+    ports:
+        - 3306:3306 
+    volumes_from:
+        - data
+    environment:
+        MYSQL_ROOT_PASSWORD: secret
+        MYSQL_DATABASE: project
+        MYSQL_USER: project
+        MYSQL_PASSWORD: project
+data:
+    image: mysql:5.5.48
+    volumes:
+        - ./mysql/data:/var/lib/mysql
+    command: "true"
+app:
+    image: php:5.6.19-fpm
+    volumes:
+         - ./htdocs:/usr/local/apache2/htdocs
+    command: "true"
