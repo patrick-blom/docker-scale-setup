@@ -15,9 +15,11 @@ php:
     volumes_from:
         - app
 mysql:
-    image: mysql:5.5.48
+    image: mysql:latest
     ports:
         - 3306:3306 
+    expose:
+        - 3306
     volumes_from:
         - data
     environment:
@@ -26,9 +28,9 @@ mysql:
         MYSQL_USER: project
         MYSQL_PASSWORD: project
 data:
-    image: mysql:5.5.48
+    image: mysql:latest
     volumes:
-        - ./mysql/data:/var/lib/mysql
+        - /var/lib/mysql
     command: "true"
 app:
     image: php:5.6.19-fpm
